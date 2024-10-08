@@ -31,25 +31,32 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
     <title>自作レシピ投稿 - クッキングナビ</title>
     <link rel="stylesheet" href="style.css"/>
     <style>
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
         h1 {
-            text-align: center;
+            flex-grow: 1; /* h1をフレックスの中央に配置する */
+            text-align: center; /* h1のテキストを中央揃え */
             margin-bottom: 30px;
             color: #ff5100;
         }
         .recipe-container {
             display: flex;
-            align-items: flex-start; /* 上揃えに変更 */
+            align-items: flex-start;
             border: 2px solid #ccc;
             border-radius: 5px;
             padding: 10px;
             margin-bottom: 10px;
             transition: background-color 0.3s;
-            justify-content: space-between; /* 左右にスペースを分ける */
+            justify-content: space-between;
         }
         .recipe-image {
             max-width: 30%;
             height: auto;
-            margin-left: 20px; /* 画像と説明の間隔を設定 */
+            margin-left: 20px;
         }
         .recipe-description {
             flex: 1;
@@ -59,25 +66,42 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
         }
         .button-container {
             display: flex;
-            flex-direction: column; /* ボタンを縦に並べる */
-            align-items: flex-end; /* ボタンを右揃えにする */
-            margin-left: 10px; /* ボタンの間隔を設定 */
+            flex-direction: column;
+            align-items: flex-end;
+            margin-left: 10px;
         }
         .edit-button, .delete-button {
             padding: 5px 10px;
             width: 80px;
             height: 30px;
-            background-color: #ff5100; /* 背景色を設定 */
-            color: white; /* テキスト色を白に */
-            border: none; /* ボーダーなし */
-            border-radius: 5px; /* 角を丸くする */
-            cursor: pointer; /* カーソルをポインターに */
-            margin-top: 5px; /* ボタンの間隔 */
+            background-color: #ff5100;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        .new-post-button {
+            padding: 10px 20px;
+            background-color: #00bfff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            width: 200px;
+        }
+
+        .new-post-button:hover {
+            background-color: #007acc;
         }
     </style>
 </head>
 <body>
-    <h1>自作レシピ一覧</h1>
+    <div class="header-container">
+        <h1>自作レシピ一覧</h1>
+        <button class="new-post-button" onclick="location.href='post-recipe.php'">レシピを投稿する</button>
+    </div>
 
     <?php if (!empty($userRecipes)): ?>
         <?php foreach ($userRecipes as $recipe): ?>
@@ -109,3 +133,4 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
 
 </body>
 </html>
+
