@@ -1,0 +1,57 @@
+/* ナビゲーションメニューのスタイル */
+.navbar {
+overflow: hidden;
+background-color: #333;
+}
+
+/* ナビゲーションメニュー内のリンクのスタイル */
+.navbar a {
+display: block;
+color: white;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+}
+
+.navbar a:hover {
+background-color: #ddd;
+color: black;
+}
+
+.menu {
+float: left;
+}
+
+/* ログインと新規登録のスタイル */
+.login-link, .signup-link {
+background-color: #3498db;
+float: right;
+margin-left: 10px;
+}
+
+/* ユーザー名のスタイル */
+.login, .signup {
+    background-color: #333;
+    float: right;
+    margin-left: 10px;
+}
+
+.recipepicture {
+    height: auto; /* アスペクト比を保持して高さを自動調整 */
+    max-width: 100%; /* 最大幅を親要素に合わせる */
+    display: block; /* ブロック要素として表示 */
+    margin: 0 auto; /* 中央揃え */
+}
+
+/* レシピの検索結果 */
+.recipe-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.recipe-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
