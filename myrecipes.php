@@ -82,6 +82,9 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
             margin-top: 5px;
         }
         .new-post-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
             padding: 10px 20px;
             background-color: #00bfff;
             color: white;
@@ -91,7 +94,6 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
             text-align: center;
             width: 200px;
         }
-
         .new-post-button:hover {
             background-color: #007acc;
         }
