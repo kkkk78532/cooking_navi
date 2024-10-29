@@ -52,15 +52,66 @@ function createByAI($conditions)
 
     if (curl_errno($ch)) {
         echo json_encode(['error' => curl_error($ch)]);
-    } else {
-        $response_data = json_decode($response, true);
-        if (isset($response_data['candidates'][0]['content']['parts'][0]['text'])) {
-            $text = $response_data['candidates'][0]['content']['parts'][0]['text'];
-            $json = str_replace(['```json', '```'], '', $text); // JSON部分のみ抽出
+        return;
+    }
+    
+    curl_close($ch);
+
+    $response_data = json_decode($response, true);
+    if (isset($response_data['candidates'][0]['content']['parts'][0]['text'])) {
+        $text = $response_data['candidates'][0]['content']['parts'][0]['text'];
+        $json = str_replace(['```json', '```'], '', $text); // JSON部分のみ抽出
+
+        // ai_response_formatter.phpにデータを送信
+        $formatted_response = sendToFormatter($json);
+        return $formatted_response;
+    }
+
+    return json_encode(['error' => '不明なエラーが発生しました。']);
+}
+
+function formatAIResponse($response) {
+    // JSON形式のレスポンスをデコード
+    $data = json_decode($response, true);
+    
+    // エラーチェック
+    if (isset($data['error'])) {
+        return ['success' => false, 'message' => $data['error']['message']];
+    }
+
+    // レシピデータを整形
+    $formattedRecipe = [];
+    if (isset($data['recipes']) && is_array($data['recipes'])) {
+        foreach ($data['recipes'] as $recipe) {
+            $formattedRecipe[] = [
+                'title' => $recipe['recipe_title'] ?? 'タイトル未設定',
+                'ingredients' => $recipe['ingredients'] ?? [],
+                'instructions' => $recipe['recipe_procedure'] ?? '指示なし',
+                'prep_time' => $recipe['recipe_time'] ?? '時間未設定',
+                'servings' => $recipe['recipe_ServingSize'] ?? '不明',
+            ];
         }
     }
+
+    return ['success' => true, 'recipes' => $formattedRecipe];
+}
+
+function sendToFormatter($data)
+{
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'URL_OF_ai_response_formatter.php'); // ai_response_formatter.phpのURLを指定
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json'
+    ]);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
     curl_close($ch);
-    return $json;
+
+    return $response; // 整形されたデータを返す
 }
 
 /**

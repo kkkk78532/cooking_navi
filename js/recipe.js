@@ -163,8 +163,8 @@ const renderRecipe = (data) => {
 
 
 const saveRecipe = async () => {
-    if (!recipe.title) {
-        console.error('保存するレシピがありません');
+    if (!recipe.recipes || !recipe.recipes[0].recipe_title) {
+        alert('保存するレシピがありません');
         return;
     }
 
@@ -184,10 +184,12 @@ const saveRecipe = async () => {
         }
 
         const data = await response.json();
+        alert('レシピが正常に保存されました');
         console.log('Recipe saved successfully:', data);
     } catch (error) {
         console.error('Save error:', error);
+        alert('保存エラーが発生しました');
     } finally {
-        hideLoading();  // ローディング表示終了
+        hideLoading();
     }
 }
