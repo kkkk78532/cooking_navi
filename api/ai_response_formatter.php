@@ -36,7 +36,7 @@ function formatAIResponse($response) {
 }
 
 // 例としてAPIからのレスポンスを受け取る
-$response = file_get_contents('api/your_api_endpoint'); // 適切なAPIエンドポイントに変更
+$response = file_get_contents('URL_OF_ai_create_recipe.php'); // 適切なAPIエンドポイントに変更
 $formattedResponse = formatAIResponse($response);
 
 // 整形したレスポンスを利用
