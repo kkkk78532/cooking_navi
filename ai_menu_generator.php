@@ -1,3 +1,6 @@
+<?php
+include('navbar.php'); // ナビゲーションバーを読み込む
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -6,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>レシピ表示</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css"/>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">

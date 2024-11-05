@@ -1,10 +1,10 @@
-/* ナビゲーションメニューのスタイル */
+/* =======================
+   ナビゲーションメニューのスタイル
+======================= */
 .navbar {
   overflow: hidden;
   background-color: #333;
 }
-
-/* ナビゲーションメニュー内のリンクのスタイル */
 .navbar a {
   display: block;
   color: white;
@@ -12,41 +12,29 @@
   padding: 14px 16px;
   text-decoration: none;
 }
-
 .navbar a:hover {
   background-color: #ddd;
   color: black;
 }
-
 .menu {
   float: left;
 }
-
-/* ログインと新規登録のスタイル */
-.login-link,
-.signup-link {
+.login-link, .signup-link {
   background-color: #3498db;
   float: right;
   margin-left: 10px;
 }
-
-/* ユーザー名のスタイル */
-.login,
-.signup {
+.login, .signup {
   background-color: #333;
   float: right;
   margin-left: 10px;
 }
 
-.recipepicture {
-  height: auto; /* アスペクト比を保持して高さを自動調整 */
-  max-width: 100%; /* 最大幅を親要素に合わせる */
-  display: block; /* ブロック要素として表示 */
-  margin: 0 auto; /* 中央揃え */
-}
-
-/* レシピの検索結果 */
+/* =======================
+   レシピの検索結果表示のスタイル
+======================= */
 .recipe-container {
+  display: flex;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
@@ -56,4 +44,37 @@
   max-width: 100%;
   height: auto;
   margin-bottom: 10px;
+}
+.recipe-description {
+  flex: 1;
+}
+.recipe-container:hover {
+  background-color: #f9f9f9;
+}
+
+/* =======================
+   検索フォームのスタイル
+======================= */
+.search-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.search-form input[type="text"] {
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.search-form input[type="submit"] {
+  background-color: #ff5100;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
 }

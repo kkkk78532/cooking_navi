@@ -23,62 +23,6 @@ $recipes = $stmt->fetchAll();
     <meta charset="UTF-8">
     <title>クッキングナビ - ホーム</title>
     <link rel="stylesheet" href="style.css"/>
-    <style>
-        /* スタイル調整 */
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #ff5100;
-        }
-
-        .search-form {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-form input[type="text"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .search-form input[type="submit"] {
-            background-color: #ff5100;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .recipe-container {
-            display: flex;
-            border: 3px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-
-        .recipe-image {
-            max-width: 30%;
-            height: auto;
-            margin-right: 20px;
-        }
-
-        .recipe-description {
-            flex: 1;
-        }
-
-        .recipe-container:hover {
-            background-color: #f9f9f9;
-        }
-    </style>
 </head>
 <body>
     <h1>レシピ検索</h1>
