@@ -14,7 +14,7 @@ $inputJSON = file_get_contents('php://input');
 $recipeData = json_decode($inputJSON, true);
 
 // データのバリデーション
-if (!isset($recipeData['recipes'][0]) || !isset($recipeData['ingredients']) || !isset($recipeData['recipe_procedure'])) {
+if (!isset($recipeData['recipe_title']) || !isset($recipeData['ingredients']) || !isset($recipeData['recipe_procedure'])) {
     http_response_code(400);
     echo json_encode(['message' => 'Invalid recipe data']);
     exit;
@@ -36,7 +36,7 @@ try {
     $pdo->beginTransaction();
 
     // レシピを保存
-    $recipe = $recipeData['recipes'][0];
+    $recipe = $recipeData;
     $sql = 'INSERT INTO recipes (recipe_title, recipe_time, recipe_difficulty, recipe_ServingSize, recipe_introduction) VALUES (?, ?, ?, ?, ?)';
     $stmt = $pdo->prepare($sql);
     $stmt->execute([

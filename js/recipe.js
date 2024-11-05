@@ -64,6 +64,8 @@ const createRecipe = async () => {
         keywords
     };
 
+    console.log(posts)
+
     try {
         const response = await fetch(aiCreateUri, {
             method: 'POST',
@@ -128,9 +130,9 @@ const renderRecipe = (data) => {
 
     // タイトル、説明、難易度、キーワードを表示
     recipeDiv.innerHTML += `
-        <h2 class="text-3xl font-bold text-gray-800 mb-4">${recipe.recipes[0].recipe_title}</h2>
-        <p class="text-gray-700 mb-4">${recipe.recipes[0].recipe_introduction}</p>
-        <p class="text-gray-600 mb-4"><strong>難易度:</strong> ${recipe.recipes[0].recipe_difficulty}</p>
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">${recipe.recipe_title}</h2>
+        <p class="text-gray-700 mb-4">${recipe.recipe_introduction}</p>
+        <p class="text-gray-600 mb-4"><strong>難易度:</strong> ${recipe.recipe_difficulty}</p>
         <p class="text-gray-600 mb-6"><strong>キーワード:</strong> ${recipe.keywords}</p>
     `;
 
@@ -163,7 +165,8 @@ const renderRecipe = (data) => {
 
 
 const saveRecipe = async () => {
-    if (!recipe.recipes || !recipe.recipes[0].recipe_title) {
+    console.log(recipe)
+    if (!recipe.recipe_title || !recipe.ingredients) {
         alert('保存するレシピがありません');
         return;
     }

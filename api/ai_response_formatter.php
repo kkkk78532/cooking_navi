@@ -23,11 +23,11 @@ function formatAIResponse($response) {
     if (isset($data['recipes']) && is_array($data['recipes'])) {
         foreach ($data['recipes'] as $recipe) {
             $formattedRecipe[] = [
-                'title' => $recipe['title'] ?? 'タイトル未設定',
+                'title' => $recipe['recipe_title'] ?? 'タイトル未設定',
                 'ingredients' => $recipe['ingredients'] ?? [],
-                'instructions' => $recipe['instructions'] ?? '指示なし',
-                'prep_time' => $recipe['prep_time'] ?? '時間未設定',
-                'servings' => $recipe['servings'] ?? '不明',
+                'instructions' => $recipe['recipe_procedure'] ?? '指示なし',
+                'prep_time' => $recipe['recipe_time'] ?? '時間未設定',
+                'servings' => $recipe['recipe_ServingSize'] ?? '不明',
             ];
         }
     }
