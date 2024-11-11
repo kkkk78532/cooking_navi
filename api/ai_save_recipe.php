@@ -47,7 +47,7 @@ try {
         $recipe['recipe_introduction'] ?? ''
     ]);
 
-    $recipeId = $pdo->lastInsertId();
+    $recipeId = $pdo->lastInsertId(); // 保存したレシピID
 
     // 材料を保存
     $sql = 'INSERT INTO ingredients (recipe_id, ingredient_name, quantity) VALUES (?, ?, ?)';
@@ -71,12 +71,26 @@ try {
         ]);
     }
 
+    // ここでmeal_plansテーブルにレシピを追加
+    // セッションからユーザーIDを取得（仮にセッションが開始されているものと仮定）
+    session_start();
+    $userId = $_SESSION['user_id']; // セッションに保存されたユーザーID
+
+    // 献立にレシピを追加
+    $planDate = date('Y-m-d'); // 現在の日付
+    $sql = 'INSERT INTO meal_plans (user_id, recipe_id, plan_date) VALUES (?, ?, ?)';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        $userId,
+        $recipeId,
+        $planDate
+    ]);
+
     // コミット
     $pdo->commit();
-    echo json_encode(['message' => 'Recipe saved successfully']);
+    echo json_encode(['message' => 'Recipe saved and added to meal plan successfully']);
 } catch (PDOException $e) {
     $pdo->rollBack();
     echo json_encode(['message' => 'Database error occurred.']);
 }
-
 ?>

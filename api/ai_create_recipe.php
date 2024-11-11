@@ -80,6 +80,7 @@ function template()
         "recipe_time": "30",
         "recipe_difficulty": "上級",
         "recipe_ServingSize": "1人前",
+        "meal_plans": "breakfast",
         "recipe_introduction": "xxxxxxxxxx"
         "keywords": "キーワード1,キーワード2",
         "ingredients": [

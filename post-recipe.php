@@ -133,8 +133,7 @@ include('navbar.php'); // ナビゲーションバーを読み込む
         <div id="ingredientInputs" class="ingredient-inputs">
             <div>
                 <input type="text" name="ingredient_names[]" placeholder="材料" required>
-                <input type="text" name="ingredient_quantities[]" placeholder="量" required>
-                <input type="text" name="ingredient_units[]" placeholder="単位">
+                <input type="text" name="ingredient_quantities[]" placeholder="量　(例：100g、大さじ1、少々)" required>
                 <button type="button" class="removeIngredient">削除</button>
             </div>
         </div>
@@ -159,8 +158,7 @@ include('navbar.php'); // ナビゲーションバーを読み込む
                     $('#ingredientInputs').append(`
                         <div>
                             <input type="text" name="ingredient_names[]" placeholder="材料" required>
-                            <input type="text" name="ingredient_quantities[]" placeholder="量" required>
-                            <input type="text" name="ingredient_units[]" placeholder="単位">
+                            <input type="text" name="ingredient_quantities[]" placeholder="量　(例：100g、大さじ1、少々)" required>
                             <button type="button" class="removeIngredient">削除</button>
                         </div>
                     `);
