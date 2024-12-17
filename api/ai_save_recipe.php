@@ -1,10 +1,16 @@
 <?php
+include('navbar.php'); // ナビゲーションバーを読み込む
+include('dbconnect.php'); // データベース接続ファイルを読み込む
+
+
+// CORSヘッダーを設定（ワイルドカードで全てのドメインを許可）
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
 
 // POSTメソッドかどうかを確認
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); 
+    http_response_code(405);
     echo json_encode(['message' => 'Only POST requests are allowed']);
     exit;
 }
@@ -20,12 +26,6 @@ if (!isset($recipeData['recipe_title']) || !isset($recipeData['ingredients']) ||
     exit;
 }
 
-// データベース接続設定
-$host = 'localhost';
-$dbname = 'cookbook_db';
-$user = 'root';
-$pass = '';
-$info = "mysql:host=$host;dbname=$dbname;charset=utf8";
 
 try {
     // PDOでデータベース接続
@@ -71,17 +71,17 @@ try {
         ]);
     }
 
-    $userId = $_SESSION['user_id']; // セッションに保存されたユーザーID
-
-    // 献立にレシピを追加
-    $planDate = date('Y-m-d'); // 現在の日付
-    $sql = 'INSERT INTO meal_plans (user_id, recipe_id, plan_date) VALUES (?, ?, ?)';
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        $userId,
-        $recipeId,
-        $planDate
-    ]);
+    // meal_plansにデータを保存
+    if (isset($recipeData['plan_date']) && isset($recipeData['user_id']) && isset($recipeData['meal_type'])) {
+        $sql = 'INSERT INTO meal_plans (user_id, recipe_id, plan_date, meal_type) VALUES (?, ?, ?, ?)';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            $recipeData['user_id'], // ユーザーID
+            $recipeId,               // レシピID（先ほど保存したレシピID）
+            $recipeData['plan_date'],// 計画日
+            $recipeData['meal_type'] // 食事の種類（朝食、昼食、夕食など）
+        ]);
+    }
 
     // コミット
     $pdo->commit();

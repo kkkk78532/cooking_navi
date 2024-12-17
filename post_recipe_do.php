@@ -2,7 +2,7 @@
 require('dbconnect.php');
 session_start(); // セッションの開始
 
-if(!isset($_SESSION['username'])) {
+if(!isset($_SESSION['user_id'])) {
     echo "ログインしていません。<br>";
     echo '<a href="signup.php">新規登録が完了していない方はこちら！</a><br>';
     echo '<a href="login.php">ログインはこちら！</a>';
@@ -10,7 +10,7 @@ if(!isset($_SESSION['username'])) {
 }
 
 
-$username = $_SESSION['username'];
+$user_id = $_SESSION['user_id'];
 
 // フォームから他のデータを取得
 $recipeTitle = $_POST["recipeTitle"];
@@ -27,15 +27,15 @@ if(empty($recipeTitle) || empty($recipeDifficulty) || empty($recipeTime) || empt
 
 try {
     // レシピ情報をデータベースに登録
-    $sql = "INSERT INTO recipes (recipe_title, recipe_difficulty, recipe_time, recipe_ServingSize, recipe_introduction, username) 
-            VALUES (:recipe_title, :recipe_difficulty, :recipe_time, :recipe_ServingSize, :recipe_introduction, :username)";
+    $sql = "INSERT INTO recipes (recipe_title, recipe_difficulty, recipe_time, recipe_ServingSize, recipe_introduction, user_id) 
+            VALUES (:recipe_title, :recipe_difficulty, :recipe_time, :recipe_ServingSize, :recipe_introduction, :user_id)";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':recipe_title', $recipeTitle);
     $stmt->bindParam(':recipe_difficulty', $recipeDifficulty);
     $stmt->bindParam(':recipe_time', $recipeTime);
     $stmt->bindParam(':recipe_ServingSize', $recipeServingSize);
     $stmt->bindParam(':recipe_introduction', $recipeintroduction);
-    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':user_id', $user_id);
     $stmt->execute();
 
     // レシピIDを取得
@@ -47,7 +47,7 @@ try {
     $ingredient_units = isset($_POST['ingredient_units']) ? $_POST['ingredient_units'] : [];
 
     // 材料の長さチェック
-    if(count($ingredient_names) !== count($ingredient_quantities) || count($ingredient_names) !== count($ingredient_units)) {
+    if(count($ingredient_names) !== count($ingredient_quantities)) {
         echo "材料情報が正しくありません。";
         exit();
     }
@@ -55,19 +55,18 @@ try {
     // 単位が空の場合は空文字列に
     foreach ($ingredient_units as $index => $unit) {
         if (empty($unit)) {
-            $ingredient_units[$index] = ''; 
+            $ingredient_units[$index] = '';
         }
     }
 
     // 材料をループで保存
     $length = count($ingredient_names);
     for ($i = 0; $i < $length; $i++) {
-        $sql = "INSERT INTO ingredients (recipe_id, ingredient_name, quantity, unit) VALUES (:recipe_id, :ingredient_name, :quantity, :unit)";
+        $sql = "INSERT INTO ingredients (recipe_id, ingredient_name, quantity) VALUES (:recipe_id, :ingredient_name, :quantity)";
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':recipe_id', $recipeId);
         $stmt->bindParam(':ingredient_name', $ingredient_names[$i]);
         $stmt->bindParam(':quantity', $ingredient_quantities[$i]);
-        $stmt->bindParam(':unit', $ingredient_units[$i]);
         $stmt->execute();
     }
 

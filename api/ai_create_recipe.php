@@ -2,11 +2,17 @@
 // env.php を読み込み
 require_once '../env.php';
 
+// CORSヘッダーを設定（ワイルドカードで全てのドメインを許可）
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Credentials: true");
+// header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+// header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
 // JSONデータ取得
 $posts = json_decode(file_get_contents('php://input'), true);
 
 // テストデータまたはGemini APIを使用
-// $data = testData(); // テストデータを使用
+//$data = testData(); // テストデータを使用
 
 $data = createByAI($posts);
 

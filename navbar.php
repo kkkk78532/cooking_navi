@@ -20,5 +20,6 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
     <a class="menu" href="post-recipe.php">自作レシピ投稿</a>
     <a class="menu" href="myrecipes.php">投稿したレシピ</a>
     <a class="menu" href="ai_menu_generator.php">AI機能</a>
+    <a class="menu" href="calendar.php">献立カレンダー</a>
     <?php echo $loginDisplayCombined; ?>
 </div>

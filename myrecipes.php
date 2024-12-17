@@ -4,17 +4,16 @@ include('navbar.php'); // ナビゲーションバーを読み込む
 
 // ログイン状態を確認して表示を切り替え
 if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
+    $loggedInUserId = $_SESSION['user_id'];
     $loggedInUser = $_SESSION['username'];
     $loginDisplay = '<p class="login" style="float: right; color: #00f7ff;">ようこそ、'.$loggedInUser.' さん！</p>';
     $loginDisplay2 = '<a class="signup" href="logout.php" id="logout-link" style="float: right; cursor: pointer; color: #ff5100; text-decoration: underline;">ログアウト</a>';
-
-    // 両方の表示を結合
     $loginDisplayCombined = $loginDisplay2 . $loginDisplay;
 
     // ユーザーが投稿したレシピ情報を取得
-    $sql = "SELECT * FROM recipes WHERE username = :username";
+    $sql = "SELECT * FROM recipes WHERE user_id = :user_id";
     $stmt = $db->prepare($sql);
-    $stmt->bindParam(':username', $loggedInUser);
+    $stmt->bindParam(':user_id', $loggedInUserId, PDO::PARAM_INT);
     $stmt->execute();
     $userRecipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {

@@ -73,6 +73,7 @@ include('navbar.php'); // ナビゲーションバーを読み込む
         </div>
     </div>
 
+    <script src="js/env.js" defer></script>
     <script src="js/recipe.js" defer></script>
 </body>
 

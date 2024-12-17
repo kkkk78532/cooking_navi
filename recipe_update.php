@@ -2,18 +2,18 @@
 require('dbconnect.php');
 include('navbar.php'); // ナビゲーションバーを読み込む
 
-if (isset($_SESSION['username'])) {
-    $username = $_SESSION['username'];
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 
     // レシピIDを取得
     if (isset($_GET['recipe_id'])) {
         $recipeId = $_GET['recipe_id'];
 
         // データベースからレシピ情報を取得
-        $sql = "SELECT * FROM recipes WHERE id = :recipe_id AND username = :username";
+        $sql = "SELECT * FROM recipes WHERE id = :recipe_id AND user_id = :user_id";
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':recipe_id', $recipeId);
-        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
         $recipe = $stmt->fetch();
 

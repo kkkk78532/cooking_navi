@@ -1,9 +1,13 @@
-const aiCreateUri = 'http://localhost/cooking_navi/api/ai_create_recipe.php';
-const aiImageCreateUri = 'http://localhost/cooking_navi/api/recipe/ai_image_create.php';
-const saveUri = 'http://localhost/cooking_navi/api/ai_save_recipe.php';
+const aiCreateUri = `http://${ipAddress}/cooking_navi/api/ai_create_recipe.php`;
+const aiImageCreateUri = `http://${ipAddress}/cooking_navi/api/recipe/ai_image_create.php`;
+const saveUri = `http://${ipAddress}/cooking_navi/api/ai_save_recipe.php`;
 
 var keywordList = [];
 var recipe = {};
+
+console.log(aiCreateUri)
+console.log(aiImageCreateUri)
+console.log(saveUri)
 
 // ローディング表示を制御する関数
 const showLoading = () => {
@@ -64,7 +68,7 @@ const createRecipe = async () => {
         keywords
     };
 
-    console.log(posts)
+    console.log(posts);
 
     try {
         const response = await fetch(aiCreateUri, {
@@ -80,10 +84,10 @@ const createRecipe = async () => {
         }
 
         recipe = await response.json();
-        console.log(recipe)
+        console.log(recipe);
         renderRecipe(recipe);
     } catch (error) {
-        console.error('Fetch error:', error);
+        console.error('Fetch error:'. error);
     } finally {
         hideLoading();
     }
@@ -143,7 +147,7 @@ const renderRecipe = (data) => {
 
     recipe.ingredients.forEach(ingredient => {
         const li = document.createElement('li');
-        li.innerHTML = `<strong>${ingredient.ingredient_name}</strong>: ${ingredient.quantity}`; // 修正
+        li.innerHTML = `<strong>${ingredient.ingredient_name}</strong>: ${ingredient.quantity}`;
         ingredientsList.appendChild(li);
     });
 
@@ -154,18 +158,19 @@ const renderRecipe = (data) => {
     const stepsList = document.createElement('ol');
     stepsList.classList.add('list-decimal', 'pl-5', 'mb-6');
 
-    recipe.recipe_procedure.forEach(step => { // 修正
+    recipe.recipe_procedure.forEach(step => {
         const li = document.createElement('li');
-        li.innerHTML = `ステップ ${step.step_numbers}: ${step.recipe_description}`; // 修正
+        li.innerHTML = `ステップ ${step.step_numbers}: ${step.recipe_description}`;
         stepsList.appendChild(li);
     });
 
     recipeDiv.appendChild(stepsList);
 }
 
+const userId = document.getElementById('recipe').getAttribute('data-user-id');
 
 const saveRecipe = async () => {
-    console.log(recipe)
+    console.log(recipe);
     if (!recipe.recipe_title || !recipe.ingredients) {
         alert('保存するレシピがありません');
         return;
@@ -189,6 +194,26 @@ const saveRecipe = async () => {
         const data = await response.json();
         alert('レシピが正常に保存されました');
         console.log('Recipe saved successfully:', data);
+        const mealPlan = {
+            user_id: userId, // 現在のユーザーIDを指定 (仮のID)
+            plan_date: '2024-12-25', // 計画日を指定 (仮の日付)
+            meal_type: 'dinner', // 食事の種類 (例: 'breakfast', 'lunch', 'dinner')
+            recipe_id: data.recipe_id // 保存されたレシピのID
+        };
+
+        // const mealPlanResponse = await fetch("", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(mealPlan)
+        // });
+
+        // if (!mealPlanResponse.ok) {
+        //     throw new Error('Meal plan save failed');
+        // }
+
+        console.log('Meal plan saved successfully');
     } catch (error) {
         console.error('Save error:', error);
         alert('保存エラーが発生しました');
