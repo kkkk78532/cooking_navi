@@ -42,7 +42,12 @@ $recipes = $stmt->fetchAll();
         foreach ($recipes as $recipe) {
             echo '<a href="recipe_display.php?recipe=' . urlencode($recipe['recipe_title']) . '">';
             echo '<div class="recipe-container">';
-            echo '<img src="' . htmlspecialchars($recipe['recipe_picture']) . '" alt="料理写真" class="recipe-image">';
+            
+            // 画像が登録されている場合のみ画像を表示
+            if (!empty($recipe['recipe_picture'])) {
+                echo '<img src="' . htmlspecialchars($recipe['recipe_picture']) . '" alt="料理写真" class="recipe-image">';
+            }
+            
             echo '<div class="recipe-description">';
             echo '<h2>' . htmlspecialchars($recipe['recipe_title']) . '</h2>';
             echo '<p>' . htmlspecialchars($recipe['recipe_introduction']) . '</p>';

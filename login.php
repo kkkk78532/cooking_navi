@@ -7,9 +7,27 @@ include('navbar.php'); // ナビゲーションバーを読み込む
   <meta charset="UTF-8">
   <title>ログイン - クッキングナビ</title>
   <link rel="stylesheet" href="style.css"/>
+  <style>
+    .demo-button {
+      margin: 10px;
+      float: right; /* ボタンを右端に配置 */
+      padding: 5px 10px;
+      background-color: #f0ad4e;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .demo-button:hover {
+      background-color: #ec971f;
+    }
+  </style>
 </head>
 <body>
   <h1>ログイン</h1>
+  
+  <!-- デモボタンを追加 -->
+  <button type="button" class="demo-button" onclick="fillDemoData()">デモ</button>
+  
   <form action="login_do.php" method="POST">
     <dl>
         <dt>メールアドレス</dt>
@@ -34,6 +52,14 @@ include('navbar.php'); // ナビゲーションバーを読み込む
       </dl>
     <div><input type="submit" value="ログインする"></div>
   </form>
+
+  <script>
+  function fillDemoData() {
+    // デモ用のメールアドレスとパスワードを入力欄にセット
+    document.getElementsByName('email')[0].value = 'yse@yse-c.net';
+    document.getElementsByName('password')[0].value = 'test1';
+  }
+  </script>
 
 </body>
 </html>

@@ -6,7 +6,7 @@ include('dbconnect.php'); // データベース接続ファイルを読み込む
 // CORSヘッダーを設定（ワイルドカードで全てのドメインを許可）
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Credentials: true");
-header('Content-Type: application/json');
+
 
 // POSTメソッドかどうかを確認
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -19,6 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $inputJSON = file_get_contents('php://input');
 $recipeData = json_decode($inputJSON, true);
 
+
+header('Content-Type: application/json');
 // データのバリデーション
 if (!isset($recipeData['recipe_title']) || !isset($recipeData['ingredients']) || !isset($recipeData['recipe_procedure'])) {
     http_response_code(400);

@@ -191,15 +191,15 @@ const saveRecipe = async () => {
             throw new Error('Network response was not ok');
         }
 
-        const data = await response.json();
+        // const data = await response.json();
         alert('レシピが正常に保存されました');
-        console.log('Recipe saved successfully:', data);
-        const mealPlan = {
-            user_id: userId, // 現在のユーザーIDを指定 (仮のID)
-            plan_date: '2024-12-25', // 計画日を指定 (仮の日付)
-            meal_type: 'dinner', // 食事の種類 (例: 'breakfast', 'lunch', 'dinner')
-            recipe_id: data.recipe_id // 保存されたレシピのID
-        };
+        // console.log('Recipe saved successfully:', data);
+        // const mealPlan = {
+        //     user_id: userId, // 現在のユーザーIDを指定 (仮のID)
+        //     plan_date: '2024-12-25', // 計画日を指定 (仮の日付)
+        //     meal_type: 'dinner', // 食事の種類 (例: 'breakfast', 'lunch', 'dinner')
+        //     recipe_id: data.recipe_id // 保存されたレシピのID
+        // };
 
         // const mealPlanResponse = await fetch("", {
         //     method: 'POST',
