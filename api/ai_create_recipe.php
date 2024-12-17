@@ -12,9 +12,9 @@ header("Access-Control-Allow-Credentials: true");
 $posts = json_decode(file_get_contents('php://input'), true);
 
 // テストデータまたはGemini APIを使用
-//$data = testData(); // テストデータを使用
+$data = testData(); // テストデータを使用
 
-$data = createByAI($posts);
+// $data = createByAI($posts);
 
 header('Content-Type: application/json');
 echo $data;
@@ -120,15 +120,11 @@ function testData()
 {
     $data = '
     {
-        "recipes": [
-            {
-                "recipe_title": "チキンカレー",
-                "recipe_time": "30分",
-                "recipe_difficulty": "中級",
-                "recipe_ServingSize": "4人前",
-                "recipe_introduction": "簡単で美味しいチキンカレーのレシピです。"
-            }
-        ],
+        "recipe_title": "チキンカレー",
+        "recipe_time": "30分",
+        "recipe_difficulty": "中級",
+        "recipe_ServingSize": "4人前",
+        "recipe_introduction": "簡単で美味しいチキンカレーのレシピです。",
         "keywords": "チキン,カレー,スパイス,簡単",
         "ingredients": [
             {

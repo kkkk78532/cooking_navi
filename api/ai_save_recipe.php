@@ -1,6 +1,6 @@
 <?php
-include('navbar.php'); // ナビゲーションバーを読み込む
-include('dbconnect.php'); // データベース接続ファイルを読み込む
+require_once '../env.php';
+require_once '../dbconnect.php'; // データベース接続ファイルを読み込む
 
 
 // CORSヘッダーを設定（ワイルドカードで全てのドメインを許可）
@@ -31,7 +31,7 @@ if (!isset($recipeData['recipe_title']) || !isset($recipeData['ingredients']) ||
 
 try {
     // PDOでデータベース接続
-    $pdo = new PDO($info, $user, $pass);
+    $pdo = $db;
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // トランザクション開始
@@ -43,10 +43,10 @@ try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         $recipe['recipe_title'],
-        $recipe['recipe_time'] ?? '',
-        $recipe['recipe_difficulty'] ?? '',
-        $recipe['recipe_ServingSize'] ?? '',
-        $recipe['recipe_introduction'] ?? ''
+        $recipe['recipe_time'],
+        $recipe['recipe_difficulty'],
+        $recipe['recipe_ServingSize'],
+        $recipe['recipe_introduction'],
     ]);
 
     $recipeId = $pdo->lastInsertId(); // 保存したレシピID
@@ -74,16 +74,16 @@ try {
     }
 
     // meal_plansにデータを保存
-    if (isset($recipeData['plan_date']) && isset($recipeData['user_id']) && isset($recipeData['meal_type'])) {
-        $sql = 'INSERT INTO meal_plans (user_id, recipe_id, plan_date, meal_type) VALUES (?, ?, ?, ?)';
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            $recipeData['user_id'], // ユーザーID
-            $recipeId,               // レシピID（先ほど保存したレシピID）
-            $recipeData['plan_date'],// 計画日
-            $recipeData['meal_type'] // 食事の種類（朝食、昼食、夕食など）
-        ]);
-    }
+    // if (isset($recipeData['plan_date']) && isset($recipeData['user_id']) && isset($recipeData['meal_type'])) {
+    //     $sql = 'INSERT INTO meal_plans (user_id, recipe_id, plan_date, meal_type) VALUES (?, ?, ?, ?)';
+    //     $stmt = $pdo->prepare($sql);
+    //     $stmt->execute([
+    //         $recipeData['user_id'], // ユーザーID
+    //         $recipeId,               // レシピID（先ほど保存したレシピID）
+    //         $recipeData['plan_date'],// 計画日
+    //         $recipeData['meal_type'] // 食事の種類（朝食、昼食、夕食など）
+    //     ]);
+    // }
 
     // コミット
     $pdo->commit();
