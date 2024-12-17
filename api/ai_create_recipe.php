@@ -12,9 +12,9 @@ header("Access-Control-Allow-Credentials: true");
 $posts = json_decode(file_get_contents('php://input'), true);
 
 // テストデータまたはGemini APIを使用
-$data = testData(); // テストデータを使用
+// $data = testData(); // テストデータを使用
 
-// $data = createByAI($posts);
+$data = createByAI($posts);
 
 header('Content-Type: application/json');
 echo $data;
