@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('dbconnect.php');
 include('navbar.php'); // ナビゲーションバーを読み込む
 

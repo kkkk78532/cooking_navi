@@ -40,7 +40,8 @@
                     header('Location: home.php');
                 } else {
                     // ログイン失敗時の処理
-                    echo 'ログインに失敗しました。メールアドレスとパスワードをご確認ください。';
+                    echo 'ログインに失敗しました。メールアドレスとパスワードが正しくありません。';
+                    echo '<br><a href="login.php"><button type="button">ログインページに戻る</button></a>';
                 }
             }
         ?>

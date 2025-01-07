@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('dbconnect.php');
 include('navbar.php'); // ナビゲーションバーを読み込む
 
@@ -117,6 +118,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
                 <div class="button-container">
                     <button class="edit-button" onclick="location.href='recipe_update.php?recipe_id=<?php echo $recipe['id']; ?>'">編集</button>
                     <button class="delete-button" onclick="deleteRecipe(<?php echo $recipe['id']; ?>)">削除</button>
+                    <button class="add-to-calendar-button" onclick="addToCalendar(<?php echo $recipe['id']; ?>)">カレンダーに追加</button>
                 </div>
             </div>
         <?php endforeach; ?>
@@ -129,6 +131,25 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
             if (confirm("本当にこのレシピを削除しますか？")) {
                 window.location.href = "recipe_delete.php?recipe_id=" + recipeId;
             }
+        }
+
+        function addToCalendar(recipeId) {
+            const userId = <?php echo $loggedInUserId; ?>; // ログイン中のユーザーIDを取得
+
+            fetch('../calendar_do.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user_id: userId, recipe_id: recipeId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message); // 成功メッセージ
+            })
+            .catch(error => {
+                alert('エラーが発生しました');
+            });
         }
     </script>
 

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include('navbar.php'); // ナビゲーションバーを読み込む
 ?>
 <!-- 新規登録ページ -->

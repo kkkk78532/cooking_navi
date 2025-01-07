@@ -1,12 +1,11 @@
 <?php
+session_start();
 require_once '../env.php';
 require_once '../dbconnect.php'; // データベース接続ファイルを読み込む
-
 
 // CORSヘッダーを設定（ワイルドカードで全てのドメインを許可）
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Credentials: true");
-
 
 // POSTメソッドかどうかを確認
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -19,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $inputJSON = file_get_contents('php://input');
 $recipeData = json_decode($inputJSON, true);
 
-
 header('Content-Type: application/json');
 // データのバリデーション
 if (!isset($recipeData['recipe_title']) || !isset($recipeData['ingredients']) || !isset($recipeData['recipe_procedure'])) {
@@ -28,6 +26,17 @@ if (!isset($recipeData['recipe_title']) || !isset($recipeData['ingredients']) ||
     exit;
 }
 
+// ユーザーがログインしているか確認
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(['message' => 'You are not logged in. Please log in first.']);
+    echo '<br>';
+    echo '<a href="signup.php">New registration</a><br>';
+    echo '<a href="login.php">Login</a>';
+    exit();
+}
+
+// セッションからuser_idを取得
+$recipe['user_id'] = $_SESSION['user_id'];
 
 try {
     // PDOでデータベース接続
@@ -38,15 +47,15 @@ try {
     $pdo->beginTransaction();
 
     // レシピを保存
-    $recipe = $recipeData;
-    $sql = 'INSERT INTO recipes (recipe_title, recipe_time, recipe_difficulty, recipe_ServingSize, recipe_introduction) VALUES (?, ?, ?, ?, ?)';
+    $sql = 'INSERT INTO recipes (recipe_title, user_id, recipe_time, recipe_difficulty, recipe_ServingSize, recipe_introduction) VALUES (?, ?, ?, ?, ?, ?)';
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-        $recipe['recipe_title'],
-        $recipe['recipe_time'],
-        $recipe['recipe_difficulty'],
-        $recipe['recipe_ServingSize'],
-        $recipe['recipe_introduction'],
+        $recipeData['recipe_title'],
+        $recipe['user_id'],
+        $recipeData['recipe_time'],
+        $recipeData['recipe_difficulty'],
+        $recipeData['recipe_ServingSize'],
+        $recipeData['recipe_introduction'],
     ]);
 
     $recipeId = $pdo->lastInsertId(); // 保存したレシピID
@@ -73,21 +82,9 @@ try {
         ]);
     }
 
-    // meal_plansにデータを保存
-    // if (isset($recipeData['plan_date']) && isset($recipeData['user_id']) && isset($recipeData['meal_type'])) {
-    //     $sql = 'INSERT INTO meal_plans (user_id, recipe_id, plan_date, meal_type) VALUES (?, ?, ?, ?)';
-    //     $stmt = $pdo->prepare($sql);
-    //     $stmt->execute([
-    //         $recipeData['user_id'], // ユーザーID
-    //         $recipeId,               // レシピID（先ほど保存したレシピID）
-    //         $recipeData['plan_date'],// 計画日
-    //         $recipeData['meal_type'] // 食事の種類（朝食、昼食、夕食など）
-    //     ]);
-    // }
-
     // コミット
     $pdo->commit();
-    echo json_encode(['message' => 'Recipe saved and added to meal plan successfully']);
+    echo json_encode(['message' => 'Recipe saved successfully']);
 } catch (PDOException $e) {
     $pdo->rollBack();
     echo json_encode(['message' => 'Database error occurred.']);
