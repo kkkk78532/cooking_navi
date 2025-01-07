@@ -61,6 +61,7 @@ function createByAI($conditions)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
 
+    $json = "";
     if (curl_errno($ch)) {
         echo json_encode(['error' => curl_error($ch)]);
     } else {
@@ -68,6 +69,9 @@ function createByAI($conditions)
         if (isset($response_data['candidates'][0]['content']['parts'][0]['text'])) {
             $text = $response_data['candidates'][0]['content']['parts'][0]['text'];
             $json = str_replace(['```json', '```'], '', $text);
+        } else {
+            $result['error'] = "GeminiAPI error";
+            $json = json_encode($result);
         }
     }
     curl_close($ch);

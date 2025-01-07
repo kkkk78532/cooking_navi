@@ -24,7 +24,7 @@ if(isset($_GET['recipe'])) {
     $stmtProcedure->bindParam(':recipe_id', $recipe['id']); // ここで適切なレシピ識別子を指定する
     $stmtProcedure->execute();
     $cook_procedure = $stmtProcedure->fetchAll(PDO::FETCH_ASSOC);
-    
+
 } else {
     echo "レシピが指定されていません。";
 }
@@ -49,7 +49,9 @@ if(isset($_GET['recipe'])) {
     <?php
     // レシピ情報を表示
     if($recipe) {
-        echo "<img src='{$recipe['recipe_picture']}' alt='料理の写真' class='recipepicture' style='margin-top: 20px;'>";
+        if (!empty($recipe['recipe_picture'])) {
+            echo "<img src='{$recipe['recipe_picture']}' alt='料理の写真' class='recipepicture' style='margin-top: 20px;'>";
+        }
         echo "<h1 style='color: #333333;'>{$recipe['recipe_title']}</h1>";
         echo "<p style='font-size: 22px;'>調理時間: {$recipe['recipe_time']}分　難易度: {$recipe['recipe_difficulty']}　人数: {$recipe['recipe_ServingSize']}</p>";
         echo "<div style='padding: 5px; background-color: #DDDDDD; margin-top: 10px;'>";
