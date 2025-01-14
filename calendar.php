@@ -4,15 +4,20 @@ include('navbar.php'); // ナビゲーションバーを読み込む
 include('dbconnect.php'); // データベース接続ファイルを読み込む
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>献立カレンダー</title>
   <link rel="stylesheet" href="style.css"/>
   <style>
-    table {
-      width: 100%;
+    .container {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+    }
+    .calendar {
+      width: 70%;
       border-collapse: collapse;
     }
     th, td {
@@ -23,17 +28,35 @@ include('dbconnect.php'); // データベース接続ファイルを読み込む
     th {
       background-color: #f4f4f4;
     }
-    .calendar {
-      margin: 20px auto;
-    }
     .nav {
       text-align: center;
-      margin: 20px;
+      margin: 20px 0;
     }
     .nav a {
       margin: 0 10px;
       text-decoration: none;
       color: #007BFF;
+    }
+    .meal-plan-list {
+      width: 25%;
+      background-color: #f9f9f9;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .meal-plan-list h2 {
+      margin-top: 0;
+    }
+    .meal-plan-list ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .meal-plan-list li {
+      margin: 8px 0;
+      padding: 8px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
     }
   </style>
 </head>
@@ -61,124 +84,82 @@ include('dbconnect.php'); // データベース接続ファイルを読み込む
     }
   ?>
 
-  <!-- 年月変更ナビゲーション -->
   <div class="nav">
-    <a href="?year=<?= $prevYear ?>&month=<?= $prevMonth ?>">← 前月</a>
+    <a href="?year=<?= $prevYear ?>&month=<?= $prevMonth ?>">&larr; 前月</a>
     <span><?= $year ?>年 <?= $month ?>月</span>
-    <a href="?year=<?= $nextYear ?>&month=<?= $nextMonth ?>">次月 →</a>
+    <a href="?year=<?= $nextYear ?>&month=<?= $nextMonth ?>">次月 &rarr;</a>
+  </div>
 
-    <div id="mealPlanSpace" class="bg-gray-200 p-4 rounded">
-        <h2 class="text-xl font-bold">献立案</h2>
-        <ul id="mealPlanList" class="space-y-2">
-            <!-- AJAXで動的にリストを取得 -->
-        </ul>
-    </div>
-
-  <table class="calendar">
-    <thead>
-      <tr>
-        <th>日</th>
-        <th>月</th>
-        <th>火</th>
-        <th>水</th>
-        <th>木</th>
-        <th>金</th>
-        <th>土</th>
-      </tr>
-    </thead>
-    <tbody>
+  <div class="container">
+    <table class="calendar">
+      <thead>
+        <tr>
+          <th>日</th>
+          <th>月</th>
+          <th>火</th>
+          <th>水</th>
+          <th>木</th>
+          <th>金</th>
+          <th>土</th>
+        </tr>
+      </thead>
+      <tbody>
         <?php
-            // 月の初日情報
-            $firstDayOfMonth = "$year-$month-01";
-            $firstWeekday = date('w', strtotime($firstDayOfMonth));
-            $daysInMonth = date('t', strtotime($firstDayOfMonth));
+          $firstDayOfMonth = "$year-$month-01";
+          $firstWeekday = date('w', strtotime($firstDayOfMonth));
+          $daysInMonth = date('t', strtotime($firstDayOfMonth));
 
-            // カレンダー生成
-            echo '<tr>';
-            for ($i = 0; $i < $firstWeekday; $i++) {
-                echo '<td></td>'; // 空白セル
-            }
+          echo '<tr>';
+          for ($i = 0; $i < $firstWeekday; $i++) {
+              echo '<td></td>';
+          }
 
-            for ($day = 1; $day <= $daysInMonth; $day++) {
-                $currentDate = "$year-" . str_pad($month, 2, '0', STR_PAD_LEFT);
+          for ($day = 1; $day <= $daysInMonth; $day++) {
+              echo '<td>' . $day . '</td>';
+              if (($day + $firstWeekday) % 7 == 0) {
+                  echo '</tr><tr>';
+              }
+          }
 
-                // セル作成
-                echo '<td ondragover="allowDrop(event)" ondrop="dropMealPlan(event, \'' . $currentDate . '\')">';
-                echo "<strong>$day</strong>";
-                if (isset($mockData[$currentDate])) {
-                    foreach ($mockData[$currentDate] as $meal) {
-                        echo "<p>$meal</p>";
-                    }
-                } else {
-                    echo "<p>献立なし</p>";
-                }
-                echo '</td>';
-
-                // 行の終了
-                if (($day + $firstWeekday) % 7 == 0 || $day == $daysInMonth) {
-                    if ($day < $daysInMonth) {
-                        echo '<tr>';
-                    }
-                }
-            }
-
-            // 最後の行を埋める空白セル
-            if (($daysInMonth + $firstWeekday) % 7 != 0) {
-                for ($i = ($daysInMonth + $firstWeekday) % 7; $i < 7; $i++) {
-                    echo '<td></td>'; // 空白セル
-                }
-                echo '</tr>'; // 最後の行を閉じる
-            }
+          $remainingCells = (7 - (($daysInMonth + $firstWeekday) % 7)) % 7;
+          for ($i = 0; $i < $remainingCells; $i++) {
+              echo '<td></td>';
+          }
+          echo '</tr>';
         ?>
-    </tbody>
+      </tbody>
+    </table>
 
-</body>
+    <div class="meal-plan-list">
+      <h2>献立案一覧</h2>
+      <ul id="mealPlanList">
+        <li>献立がありません</li>
+      </ul>
+    </div>
+  </div>
 
-<script>
-    // ページが読み込まれた後にリストを取得する
+  <script>
     document.addEventListener('DOMContentLoaded', function () {
-        fetchMealPlans(); // ページが読み込まれたらリストを取得
-    });
-
-    function fetchMealPlans() {
-        fetch('fetch_meal_plans.php')
+        fetch('calendar/fetch_meal_plans.php')
             .then(response => response.json())
             .then(data => {
                 const mealPlanList = document.getElementById('mealPlanList');
                 mealPlanList.innerHTML = ''; // リストを初期化
-                data.forEach(plan => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = plan.recipe_name; // レシピ名を表示
-                    listItem.draggable = true;
-                    listItem.dataset.id = plan.id; // 献立案のID
-                    listItem.ondragstart = (e) => e.dataTransfer.setData('text/plain', plan.id);
-                    mealPlanList.appendChild(listItem);
-                });
+                if (data.length === 0) {
+                    mealPlanList.innerHTML = '<li>献立がありません</li>';
+                } else {
+                    data.forEach(plan => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = plan.recipe_name;
+                        mealPlanList.appendChild(listItem);
+                    });
+                }
             })
-            .catch(error => console.error('Error fetching meal plans:', error));
-    }
-
-    function allowDrop(event) {
-        event.preventDefault();
-    }
-
-    function dropMealPlan(event, date) {
-        event.preventDefault();
-        const planId = event.dataTransfer.getData('text/plain');
-        fetch('update_meal_plan_date.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: planId, date: date })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('カレンダーに追加しました！');
-                fetchMealPlans(); // 更新後に献立案を再取得
-            } else {
-                alert('追加に失敗しました。');
-            }
-        });
-    }
-</script>
+            .catch(error => {
+                console.error('献立案の取得中にエラー:', error);
+                document.getElementById('mealPlanList').innerHTML = '<li>データを取得できませんでした</li>';
+            });
+    });
+  </script>
+</body>
 </html>

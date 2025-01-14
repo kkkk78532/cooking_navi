@@ -135,8 +135,11 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
 
         function addToCalendar(recipeId) {
             const userId = <?php echo $loggedInUserId; ?>; // ログイン中のユーザーIDを取得
+            const data = { user_id: userId, recipe_id: recipeId };
 
-            fetch('../calendar_do.php', {
+            console.log('送信するデータ:', data); // データをコンソールに表示
+
+            fetch('calendar/calendar_do.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
