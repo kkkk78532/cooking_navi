@@ -159,7 +159,6 @@ if (isset($_SESSION['user_id'])) {
                 <div>
                     <input type="text" name="ingredient_names[]" value="<?php echo htmlspecialchars($ingredient['ingredient_name'], ENT_QUOTES, 'UTF-8'); ?>" placeholder="材料" required>
                     <input type="text" name="ingredient_quantities[]" value="<?php echo htmlspecialchars($ingredient['quantity'], ENT_QUOTES, 'UTF-8'); ?>" placeholder="量" required>
-                    <input type="text" name="ingredient_units[]" value="<?php echo htmlspecialchars($ingredient['unit'], ENT_QUOTES, 'UTF-8'); ?>" placeholder="単位">
                     <button type="button" class="removeIngredient">削除</button>
                 </div>
             <?php } ?>
@@ -194,7 +193,6 @@ if (isset($_SESSION['user_id'])) {
                         <div>
                             <input type="text" name="ingredient_names[]" placeholder="材料" required>
                             <input type="text" name="ingredient_quantities[]" placeholder="量" required>
-                            <input type="text" name="ingredient_units[]" placeholder="単位">
                             <button type="button" class="removeIngredient">削除</button>
                         </div>
                     `);

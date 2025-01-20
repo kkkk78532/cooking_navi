@@ -169,12 +169,35 @@ const renderRecipe = (data) => {
 
 const userId = document.getElementById('recipe').getAttribute('data-user-id');
 
+const checkLoginStatus = async () => {
+    try {
+        const response = await fetch('../api/check_login_status.php');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data.isLoggedIn;
+    } catch (error) {
+        console.error('Error checking login status:', error);
+        return false;
+    }
+};
+
 const saveRecipe = async () => {
     console.log(recipe);
+
+    // ログイン状態を確認
+    const isLoggedIn = await checkLoginStatus();
+    if (!isLoggedIn) {
+        alert('レシピを保存するにはログインが必要です');
+        return;
+    }
+
     if (!recipe.recipe_title || !recipe.ingredients) {
         alert('保存するレシピがありません');
         return;
     }
+
 
     showLoading();
 
