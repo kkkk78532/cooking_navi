@@ -114,11 +114,10 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
                         <p><?php echo htmlspecialchars($recipe['recipe_introduction'], ENT_QUOTES, 'UTF-8'); ?></p>
                     </a>
                 </div>
-                <img src="<?php echo htmlspecialchars($recipe['recipe_picture'], ENT_QUOTES, 'UTF-8'); ?>" alt="料理写真" class="recipe-image">
+                <img src="<?php echo htmlspecialchars($recipe['recipe_picture'], ENT_QUOTES, 'UTF-8'); ?>" class="recipe-image">
                 <div class="button-container">
                     <button class="edit-button" onclick="location.href='recipe_update.php?recipe_id=<?php echo $recipe['id']; ?>'">編集</button>
                     <button class="delete-button" onclick="deleteRecipe(<?php echo $recipe['id']; ?>)">削除</button>
-                    <button class="add-to-calendar-button" onclick="addToCalendar(<?php echo $recipe['id']; ?>)">カレンダーに追加</button>
                 </div>
             </div>
         <?php endforeach; ?>

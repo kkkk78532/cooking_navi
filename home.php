@@ -46,7 +46,7 @@ $recipes = $stmt->fetchAll();
             
             // 画像が登録されている場合のみ画像を表示
             if (!empty($recipe['recipe_picture'])) {
-                echo '<img src="' . htmlspecialchars($recipe['recipe_picture']) . '" alt="料理写真" class="recipe-image">';
+                echo '<img src="' . htmlspecialchars($recipe['recipe_picture']) . '" class="recipe-image">';
             }
             
             echo '<div class="recipe-description">';
