@@ -169,29 +169,8 @@ const renderRecipe = (data) => {
 
 const userId = document.getElementById('recipe').getAttribute('data-user-id');
 
-const checkLoginStatus = async () => {
-    try {
-        const response = await fetch('../api/check_login_status.php');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        return data.isLoggedIn;
-    } catch (error) {
-        console.error('Error checking login status:', error);
-        return false;
-    }
-};
-
 const saveRecipe = async () => {
     console.log(recipe);
-
-    // ログイン状態を確認
-    const isLoggedIn = await checkLoginStatus();
-    if (!isLoggedIn) {
-        alert('レシピを保存するにはログインが必要です');
-        return;
-    }
 
     if (!recipe.recipe_title || !recipe.ingredients) {
         alert('保存するレシピがありません');
@@ -214,27 +193,7 @@ const saveRecipe = async () => {
             throw new Error('Network response was not ok');
         }
 
-        // const data = await response.json();
         alert('レシピが正常に保存されました');
-        // console.log('Recipe saved successfully:', data);
-        // const mealPlan = {
-        //     user_id: userId, // 現在のユーザーIDを指定 (仮のID)
-        //     plan_date: '2024-12-25', // 計画日を指定 (仮の日付)
-        //     meal_type: 'dinner', // 食事の種類 (例: 'breakfast', 'lunch', 'dinner')
-        //     recipe_id: data.recipe_id // 保存されたレシピのID
-        // };
-
-        // const mealPlanResponse = await fetch("", {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(mealPlan)
-        // });
-
-        // if (!mealPlanResponse.ok) {
-        //     throw new Error('Meal plan save failed');
-        // }
 
         console.log('Meal plan saved successfully');
     } catch (error) {
